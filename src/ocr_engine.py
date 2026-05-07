@@ -1,7 +1,23 @@
+"""
+ocr_engine.py — OCR engine wrapper using PaddleOCR PPStructureV3.
+
+Semua model cache diarahkan ke persistent storage (/data di HF Spaces)
+melalui modul storage.py sebelum PaddleOCR diinisialisasi.
+"""
+
+# ── MUST be first: redirect model cache BEFORE importing paddleocr ───────────
+import os
+from storage import ensure_dirs, get_env_overrides
+
+ensure_dirs()
+os.environ.update(get_env_overrides())
+# ─────────────────────────────────────────────────────────────────────────────
+
 from paddleocr import PPStructureV3
 from typing import Union, Dict, Any
 import numpy as np
 import cv2
+
 
 class OCREngine:
     def __init__(self, use_lite: bool = True):

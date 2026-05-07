@@ -1,5 +1,6 @@
 from utils import clean_ocr_markdown
-from ocr_engine import OCREngine
+from ocr_engine import OCREngine  # storage env override sudah dijalankan di sini
+from storage import storage_info
 import streamlit as st
 import numpy as np
 from PIL import Image
@@ -17,10 +18,21 @@ with st.sidebar:
     max_size = st.slider("Resolusi Maks (px)", 800, 3200, 1600, step=200,
                          help="Gambar di-resize sebelum diproses. Lebih kecil = lebih cepat.")
 
+    # ── Storage info (untuk debug di HF Spaces) ───────────────────────────
+    with st.expander("💾 Info Storage"):
+        info = storage_info()
+        st.caption(f"**Environment:** {info['environment']}")
+        st.caption(f"**Base path:** `{info['base_path']}`")
+        if "disk" in info:
+            disk = info["disk"]
+            used_pct = disk["used_gb"] / disk["total_gb"] * 100 if disk["total_gb"] > 0 else 0
+            st.progress(used_pct / 100, text=f"{disk['used_gb']} GB / {disk['total_gb']} GB digunakan")
 
-@st.cache_resource(show_spinner="Memuat model OCR...")
+
+@st.cache_resource(show_spinner="Memuat model OCR... (pertama kali bisa 1-2 menit untuk download)")
 def get_ocr_engine(lite_mode: bool):
     return OCREngine(use_lite=lite_mode)
+
 
 engine = get_ocr_engine(use_lite)
 
@@ -47,7 +59,7 @@ if uploaded_file is not None:
 
             st.success(f"✅ Selesai dalam **{elapsed:.1f} detik**")
             st.subheader("Hasil Ekstraksi (Markdown)")
-            
+
             md_text = result.get("markdown_text", "")
             cleaned_md = clean_ocr_markdown(md_text)
             if md_text:

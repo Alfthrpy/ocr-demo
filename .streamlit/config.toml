@@ -4,3 +4,15 @@ backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
 textColor = "#31333F"
 font = "sans serif"
+
+[server]
+# HuggingFace Spaces expose port 7860
+port = 7860
+# Disable XSRF protection (tidak dibutuhkan di HF Spaces sandbox)
+enableXsrfProtection = false
+# Batasi upload size — invoice biasanya < 10MB
+maxUploadSize = 20
+
+[browser]
+# Nonaktifkan usage stats (tidak perlu di sandbox)
+gatherUsageStats = false

@@ -1,0 +1,49 @@
+# ── Git internals ─────────────────────────────────────────────────────────────
+.git
+.gitignore
+
+# ── Virtual environment (besar, tidak perlu masuk image) ──────────────────────
+.venv
+venv
+env
+
+# ── Development & test files ──────────────────────────────────────────────────
+tests/
+.pytest_cache/
+pytest.ini
+.python-version
+
+# ── Docs ──────────────────────────────────────────────────────────────────────
+docs/
+*.md
+!README.md
+
+# ── Python cache ──────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ── Dev tools ─────────────────────────────────────────────────────────────────
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# ── Lock files (sudah di-pin di requirements-prod.txt) ───────────────────────
+uv.lock
+
+# ── OS files ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Local model cache (kalau ada — tidak masuk image, pakai /data di runtime) ─
+~/.cache/ocr-demo/
+*.onnx
+*.pdmodel
+*.pdiparams
+
+# ── Secrets / local config ────────────────────────────────────────────────────
+.env
+*.env.local
